@@ -19,9 +19,6 @@ CREATE INDEX idx_cities_name ON Cities(name);
 
 
 // Queries for endpoints
-
-
-//
 a) Count of each city members sorted by count DESC.
 SELECT c.name AS city, COUNT(r.id) AS count
 FROM Cities c
