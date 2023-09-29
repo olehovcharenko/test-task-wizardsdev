@@ -1,10 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Connection, RowDataPacket } from 'mysql2/promise';
 import { queries } from './queries/sql-queries';
-import { CitiesPopulationResponseDTO } from './dtos/cities-population-response.dto';
-import { ICityPopulation } from './interfaces/city-population.interface';
-import { CityMembersResponseDTO } from './dtos/city-members-response.dto';
-import { ICityMembersQueryResult } from './interfaces/city-members.interface';
+import { CityDTO } from './dtos/city.dto';
+import {
+  CitiesPopulationResponseDTO,
+  CityPopulationDTO,
+} from './dtos/city-population.dto';
+import { CityMembersResponseDTO } from './dtos/city-members.dto';
+import { ICityMembersQueryResult } from './interfaces/city-member-query-result.interface';
 
 @Injectable()
 export class CityService {
@@ -15,7 +18,7 @@ export class CityService {
   async getMembersCount(): Promise<CitiesPopulationResponseDTO> {
     const [rows] = await this.connection.execute(queries.getCityMembersCount);
 
-    const cityPopulations: ICityPopulation[] = (rows as RowDataPacket[]).map(
+    const cityPopulations: CityPopulationDTO[] = (rows as RowDataPacket[]).map(
       (row: any) => ({
         city: row.city,
         count: row.count,
@@ -57,5 +60,17 @@ export class CityService {
     const cityMembersArray = Object.values(groupedData);
 
     return { cityMembers: cityMembersArray } as CityMembersResponseDTO;
+  }
+
+  async getCityByPartialName(partialName: string): Promise<CityDTO[]> {
+    const query = queries.getFilteredCities(partialName);
+
+    const [rows] = await this.connection.execute(query);
+
+    return (rows as RowDataPacket[]).map((row: any) => ({
+      id: row.id,
+      name: row.name,
+      population: row.population,
+    }));
   }
 }

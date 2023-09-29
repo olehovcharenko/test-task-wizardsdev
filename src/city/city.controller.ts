@@ -1,8 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CitiesPopulationResponseDTO } from './dtos/cities-population-response.dto';
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CityService } from './city.service';
-import { CityMembersResponseDTO } from './dtos/city-members-response.dto';
+import { CitiesPopulationResponseDTO } from './dtos/city-population.dto';
+import { CityMembersResponseDTO } from './dtos/city-members.dto';
+import { CityDTO } from './dtos/city.dto';
 
 @ApiTags('city')
 @Controller('city')
@@ -33,5 +34,26 @@ export class CityController {
   })
   async getMembersWithSameFirstName(): Promise<CityMembersResponseDTO> {
     return await this.cityService.getMembersWithSameFirstName();
+  }
+
+  @Get('get-city-by-partial')
+  @ApiOperation({
+    summary: 'Get a city by partial name',
+  })
+  @ApiQuery({
+    name: 'partialName',
+    required: true,
+    description: 'Partial name to filter cities',
+    type: String,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Success',
+    type: CityDTO,
+  })
+  async getCityByPartialName(
+    @Query('partialName') partialName: string,
+  ): Promise<CityDTO[]> {
+    return this.cityService.getCityByPartialName(partialName);
   }
 }

@@ -23,8 +23,7 @@ export class CityMembersDTO {
   members: MembersDTO[];
 }
 
-export interface ICityMembersQueryResult {
-  city: string;
-  first_name: string;
-  count: number;
+export class CityMembersResponseDTO {
+  @ApiProperty({ type: [CityMembersDTO] })
+  cityMembers: CityMembersDTO[];
 }

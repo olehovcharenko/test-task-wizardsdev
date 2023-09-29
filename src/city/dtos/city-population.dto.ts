@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ICityPopulation {
+export class CityPopulationDTO {
   @ApiProperty({ description: 'Name of the city', example: 'Dnipro' })
   city: string;
 
@@ -9,4 +9,9 @@ export class ICityPopulation {
     example: 10000,
   })
   count: number;
+}
+
+export class CitiesPopulationResponseDTO {
+  @ApiProperty({ type: [CityPopulationDTO] })
+  citiesPopulation: CityPopulationDTO[];
 }
