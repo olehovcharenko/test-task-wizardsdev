@@ -5,12 +5,12 @@ import { CitiesPopulationResponseDTO } from './dtos/cities-population-response.d
 import { ICityPopulation } from './interfaces/city-population.interface';
 
 @Injectable()
-export class TaskService {
+export class CityService {
   constructor(
     @Inject('DATABASE_CONNECTION') private readonly connection: Connection,
   ) {}
 
-  async getCityMembersCount(): Promise<CitiesPopulationResponseDTO> {
+  async getMembersCount(): Promise<CitiesPopulationResponseDTO> {
     const [rows] = await this.connection.execute(queries.getCityMembersCount);
 
     const cityPopulations: ICityPopulation[] = (rows as RowDataPacket[]).map(

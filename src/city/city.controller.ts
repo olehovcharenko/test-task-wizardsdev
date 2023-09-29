@@ -1,14 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { TaskService } from './task.service';
 import { CitiesPopulationResponseDTO } from './dtos/cities-population-response.dto';
+import { CityService } from './city.service';
 
-@ApiTags('task')
-@Controller('task')
-export class TaskController {
-  constructor(private readonly taskService: TaskService) {}
+@ApiTags('city')
+@Controller('city')
+export class CityController {
+  constructor(private readonly cityService: CityService) {}
 
-  @Get('city-members-count')
+  @Get('members-count')
   @ApiOperation({
     summary: 'Get the count of city members sorted by count DESC',
   })
@@ -17,7 +17,7 @@ export class TaskController {
     description: 'Success',
     type: CitiesPopulationResponseDTO,
   })
-  async getCityMembersCount(): Promise<CitiesPopulationResponseDTO> {
-    return await this.taskService.getCityMembersCount();
+  async getMembersCount(): Promise<CitiesPopulationResponseDTO> {
+    return await this.cityService.getMembersCount();
   }
 }
