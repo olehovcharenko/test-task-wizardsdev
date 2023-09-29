@@ -1,9 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CityService } from './city.service';
 import { CitiesPopulationResponseDTO } from './dtos/city-population.dto';
 import { CityMembersResponseDTO } from './dtos/city-members.dto';
 import { CityDTO } from './dtos/city.dto';
+import { LoggingInterceptor } from '../interceptors/logger.interceptor';
 
 @ApiTags('city')
 @Controller('city')
@@ -19,6 +20,7 @@ export class CityController {
     description: 'Success',
     type: CitiesPopulationResponseDTO,
   })
+  @UseInterceptors(LoggingInterceptor)
   async getMembersCount(): Promise<CitiesPopulationResponseDTO> {
     return await this.cityService.getMembersCount();
   }
@@ -32,6 +34,7 @@ export class CityController {
     description: 'Success',
     type: CityMembersResponseDTO,
   })
+  @UseInterceptors(LoggingInterceptor)
   async getMembersWithSameFirstName(): Promise<CityMembersResponseDTO> {
     return await this.cityService.getMembersWithSameFirstName();
   }
@@ -51,6 +54,7 @@ export class CityController {
     description: 'Success',
     type: CityDTO,
   })
+  @UseInterceptors(LoggingInterceptor)
   async getCityByPartialName(
     @Query('partialName') partialName: string,
   ): Promise<CityDTO[]> {

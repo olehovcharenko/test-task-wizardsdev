@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { databaseProvider } from '../database.provider';
 import { CityController } from './city.controller';
 import { CityService } from './city.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [],
+  imports: [HttpModule],
   controllers: [CityController],
   providers: [CityService, databaseProvider],
 })
