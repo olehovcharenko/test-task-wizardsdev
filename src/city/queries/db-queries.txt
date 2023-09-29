@@ -13,9 +13,11 @@ CREATE TABLE Residents (
     FOREIGN KEY (city_id) REFERENCES Cities(id)
 );
 
-// An index on city_id speeds up the connection of the Residents table to the Cities table, and an index on name speeds up the search for cities by partial match.
-CREATE INDEX idx_residents_city_id ON Residents(city_id);
-CREATE INDEX idx_cities_name ON Cities(name);
+// Optimizes queries searching or filtering cities by both name and first_name.
+CREATE INDEX idx_cities_name_first_name ON Cities(name, first_name);
+
+// Enhances queries filtering residents by city_id and first_name.
+CREATE INDEX idx_residents_city_id_first_name ON Residents(city_id, first_name);
 
 
 // Queries for endpoints
