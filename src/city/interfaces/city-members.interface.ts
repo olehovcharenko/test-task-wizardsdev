@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class IMembers {
+export class MembersDTO {
   @ApiProperty({ description: 'Name of the member', example: 'Mike' })
   firstName: string;
 
@@ -11,14 +11,20 @@ export class IMembers {
   count: number;
 }
 
-export class ICityMembers {
+export class CityMembersDTO {
   @ApiProperty({ description: 'Name of the city', example: 'Dnipro' })
   city: string;
 
   @ApiProperty({
     description: 'Number of residents in the city',
     example: 10000,
-    type: IMembers,
+    type: MembersDTO,
   })
-  members: IMembers[];
+  members: MembersDTO[];
+}
+
+export interface ICityMembersQueryResult {
+  city: string;
+  first_name: string;
+  count: number;
 }

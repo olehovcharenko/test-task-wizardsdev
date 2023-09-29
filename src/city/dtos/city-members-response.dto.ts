@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ICityMembers } from '../interfaces/city-members.interface';
+import { CityMembersDTO } from '../interfaces/city-members.interface';
 
-export class CitiesPopulationResponseDTO {
-  @ApiProperty({ type: [ICityMembers] })
-  cityMembers: ICityMembers[];
+export class CityMembersResponseDTO {
+  @ApiProperty({ type: [CityMembersDTO] })
+  cityMembers: CityMembersDTO[];
 }
