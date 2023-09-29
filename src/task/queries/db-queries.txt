@@ -1,0 +1,46 @@
+
+// Creating tables
+CREATE TABLE Cities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    population INT NOT NULL
+);
+
+CREATE TABLE Residents (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    city_id INT,
+    FOREIGN KEY (city_id) REFERENCES Cities(id)
+);
+
+// An index on city_id speeds up the connection of the Residents table to the Cities table, and an index on name speeds up the search for cities by partial match.
+CREATE INDEX idx_residents_city_id ON Residents(city_id);
+CREATE INDEX idx_cities_name ON Cities(name);
+
+
+// Queries for endpoints
+
+
+//
+a) Count of each city members sorted by count DESC.
+SELECT c.name AS city, COUNT(r.id) AS count
+FROM Cities c
+JOIN Residents r ON r.city_id = c.id
+GROUP BY c.name
+ORDER BY count DESC;
+
+b) Count of members with the same first_name by every city.
+
+SELECT c.name AS city, r.first_name, COUNT(r.id) AS count
+FROM Cities c
+JOIN Residents r ON r.city_id = c.id
+GROUP BY c.name, r.first_name;
+
+
+c) Filter by “city” field partial coincidence.
+
+SELECT c.name AS city, COUNT(r.id) AS count
+FROM Cities c
+JOIN Residents r ON r.city_id = c.id
+WHERE c.name LIKE '%partial_name%'
+GROUP BY c.name;
