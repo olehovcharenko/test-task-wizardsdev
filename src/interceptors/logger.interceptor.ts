@@ -31,16 +31,16 @@ export class LoggingInterceptor implements NestInterceptor {
           httpStatus,
         });
 
-        try {
-          this.sendToLoggingService({
-            requestDuration,
-            requestData,
-            responseData,
-            httpStatus,
-          });
-        } catch (error) {
-          console.error('Error sending data to logging endpoint:', error);
-        }
+        // try {
+        //   this.sendToLoggingService({
+        //     requestDuration,
+        //     requestData,
+        //     responseData,
+        //     httpStatus,
+        //   });
+        // } catch (error) {
+        //   console.error('Error sending data to logging endpoint:', error);
+        // }
 
         return data;
       }),

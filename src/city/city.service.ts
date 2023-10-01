@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Connection, RowDataPacket } from 'mysql2/promise';
 import { queries } from './queries/sql-queries';
 import { CityDTO } from './dtos/city.dto';
 import {
@@ -8,18 +7,17 @@ import {
 } from './dtos/city-population.dto';
 import { CityMembersResponseDTO } from './dtos/city-members.dto';
 import { ICityMembersQueryResult } from './interfaces/city-member-query-result.interface';
+import { Client } from 'pg';
 
 @Injectable()
 export class CityService {
-  constructor(
-    @Inject('DATABASE_CONNECTION') private readonly connection: Connection,
-  ) {}
+  constructor(@Inject('DATABASE_CONNECTION') private readonly client: Client) {}
 
   async getMembersCount(): Promise<CitiesPopulationResponseDTO> {
-    const [rows] = await this.connection.execute(queries.getCityMembersCount);
+    const { rows } = await this.client.query(queries.getCityMembersCount);
 
-    const cityPopulations: CityPopulationDTO[] = (rows as RowDataPacket[]).map(
-      (row: any) => ({
+    const cityPopulations: CityPopulationDTO[] = rows.map(
+      (row: CityPopulationDTO) => ({
         city: row.city,
         count: row.count,
       }),
@@ -31,17 +29,17 @@ export class CityService {
   }
 
   async getMembersWithSameFirstName(): Promise<CityMembersResponseDTO> {
-    const [rows] = await this.connection.execute(
+    const { rows } = await this.client.query(
       queries.getMembersWithSameFirstName,
     );
 
-    const cityMembers: ICityMembersQueryResult[] = (
-      rows as RowDataPacket[]
-    ).map((row: any) => ({
-      city: row.city,
-      first_name: row.first_name,
-      count: row.count,
-    }));
+    const cityMembers: ICityMembersQueryResult[] = rows.map(
+      (row: ICityMembersQueryResult) => ({
+        city: row.city,
+        first_name: row.first_name,
+        count: row.count,
+      }),
+    );
 
     const groupedData = cityMembers.reduce((acc, item) => {
       const city = item.city;
@@ -65,12 +63,12 @@ export class CityService {
   async getCityByPartialName(partialName: string): Promise<CityDTO[]> {
     const query = queries.getFilteredCities(partialName);
 
-    const [rows] = await this.connection.execute(query);
+    const { rows } = await this.client.query(query);
 
-    return (rows as RowDataPacket[]).map((row: any) => ({
+    return rows.map((row: any) => ({
       id: row.id,
       name: row.name,
-      population: row.population,
+      description: row.description,
     }));
   }
 }

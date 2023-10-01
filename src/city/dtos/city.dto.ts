@@ -7,6 +7,9 @@ export class CityDTO {
   @ApiProperty({ description: 'Name of the city', example: 'Odesa' })
   name: string;
 
-  @ApiProperty({ description: 'Population of the city', example: 10000 })
-  population: number;
+  @ApiProperty({
+    description: 'Description of the city',
+    example: 'Seaside city',
+  })
+  description: number;
 }
