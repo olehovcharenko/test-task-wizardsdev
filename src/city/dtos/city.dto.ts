@@ -11,5 +11,5 @@ export class CityDTO {
     description: 'Description of the city',
     example: 'Seaside city',
   })
-  description: number;
+  description: string;
 }

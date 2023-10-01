@@ -1,8 +1,8 @@
 {
   "name": "test-task",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Test task for WizardsDev company",
+  "author": "Oleh Ovcharenko",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
