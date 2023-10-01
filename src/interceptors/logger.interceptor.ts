@@ -18,29 +18,22 @@ export class LoggingInterceptor implements NestInterceptor {
     const response = context.switchToHttp().getResponse();
 
     return next.handle().pipe(
-      map(async (data) => {
+      map((data) => {
         const requestDuration = Date.now() - start;
         const requestData = request.body;
         const responseData = data;
         const httpStatus = response.statusCode;
 
-        console.log({
-          requestDuration,
-          requestData,
-          responseData,
-          httpStatus,
+        lastValueFrom(
+          this.httpService.post('http://localhost:8765/logging', {
+            requestDuration,
+            requestData,
+            responseData,
+            httpStatus,
+          }),
+        ).catch((error) => {
+          console.error('Error sending data to logging endpoint:', error);
         });
-
-        // try {
-        //   this.sendToLoggingService({
-        //     requestDuration,
-        //     requestData,
-        //     responseData,
-        //     httpStatus,
-        //   });
-        // } catch (error) {
-        //   console.error('Error sending data to logging endpoint:', error);
-        // }
 
         return data;
       }),
@@ -48,16 +41,5 @@ export class LoggingInterceptor implements NestInterceptor {
         return throwError(error);
       }),
     );
-  }
-
-  private async sendToLoggingService(data: any): Promise<void> {
-    try {
-      await lastValueFrom(
-        this.httpService.post('http://localhost:8765/logging', data),
-      );
-    } catch (error) {
-      console.error('Error sending data to logging endpoint:', error);
-      throw error;
-    }
   }
 }
