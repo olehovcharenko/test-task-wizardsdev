@@ -38,7 +38,7 @@ export class LoggingInterceptor implements NestInterceptor {
         return data;
       }),
       catchError((error) => {
-        return throwError(error);
+        return throwError(() => error);
       }),
     );
   }

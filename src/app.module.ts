@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { databaseProvider } from './database.provider';
+import { databaseProvider } from './providers/database.provider';
 import { CityController } from './city/city.controller';
 import { CityService } from './city/city.service';
 import { CityModule } from './city/city.module';

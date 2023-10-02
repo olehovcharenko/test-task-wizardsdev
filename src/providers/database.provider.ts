@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import databaseConfig from './config/configuration';
+import databaseConfig from '../config/configuration';
 
 export const databaseProvider = {
   provide: 'DATABASE_CONNECTION',
